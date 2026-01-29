@@ -1,0 +1,1 @@
+Project implementing neural network from scratch using cpp.
