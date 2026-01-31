@@ -25,8 +25,8 @@ public:
     std::vector<size_t> layers; // a vector holding the number of neurons in each layer,{2,2,1} for 2 input neurons, 2 hidden neurons, and 1 output neuron
     double bias;
     double learning_rate;
-    std::vector<std::vector<Perceptron>> network; // 2D vector to hold layers of perceptrons
-    std::vector<std::vector<double>> values;// output of layer.
+    std::vector<std::vector<Perceptron>> network; // 2D vector to hold layers of perceptrons, network[layer][neuron], each neuron size will based on previous layer neuron count
+    std::vector<std::vector<double>> values;// output of layer. values[layer][neuron], initialized to 0.0 , each time run will update these values
     std::vector<std::vector<double>> deltas;// delta values for backpropagation.error terms 
 
     void set_weights(std::vector<std::vector<std::vector<double>>> w_init);

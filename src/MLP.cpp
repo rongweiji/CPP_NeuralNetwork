@@ -65,34 +65,35 @@ void MultiLayerPerceptron::print_weights(){
 
 
 
-// MultiLayerPerceptron constructor
+// MultiLayerPerceptron constructor, intialize values: the output of the all the neurons, and intialize network: the perceptrons in each layer
 MultiLayerPerceptron::MultiLayerPerceptron(const std::vector<size_t>& layers, double bias, double learning_rate){
-    this->layers=layers;
+    this->layers=layers;// {2,2,1} means the count of neurons in each layer
     this->bias=bias;
     this->learning_rate=learning_rate;
 
     // initialize network
     for(size_t i=0;i<layers.size();i++){
         // for each layer
-        values.push_back(std::vector<double>(layers[i],0.0));// initialize output values
-        network.push_back(std::vector<Perceptron>()); // initialize perceptron layer
+        values.push_back(std::vector<double>(layers[i],0.0));// layers[i] count of neurons in this layer, 0.0 initial value for each neuron
+        network.push_back(std::vector<Perceptron>()); // newwork add a new layer(the list of neurons in layer[i]) 
         if (i>0){ //newwork[0] is input layer,
-            // for every neuron in this layer
-            for(size_t j=0;j<layers[i];j++){
-                network[i].push_back(Perceptron(layers[i-1],bias)); // create perceptron with number of inputs equal to number of neurons in previous layer
+            for(size_t j=0;j<layers[i];j++){  // for every neuron in this layer
+                network[i].push_back(Perceptron(layers[i-1],bias)); // for current layer i, each neuron has layers[i-1] inputs
+                // each neruon is fij(x)=sigmoid(w1*x1+w2*x2+...+wn*xn+bias*1), so perception size is based previous layer neuron count so layers[i-1]
             }
         }
     }
 }
 
-// run function is for forward propagation
+// run function is for forward propagation , update all the values: the output of each neuron in the network
 std::vector<double>  MultiLayerPerceptron::run(std::vector<double> x){
     values[0]=x; // set input layer values
     for(size_t i=1;i<network.size();i++){
         // for each layer
         for(size_t j=0;j<network[i].size();j++){
-            // for each neuron in this layer
-            values[i][j]=network[i][j].run(values[i-1]); // run the perceptron with input from previous layer
+            // for each neuron in this layer, using output from previous layer as input
+            // network[i][j] is the j-th neuron in layer which is the perceptron object will have neruon run function 
+            values[i][j]=network[i][j].run(values[i-1]); // run the perceptron with input from previous layer， update all neuron output values in this layer
         }
     }
 
