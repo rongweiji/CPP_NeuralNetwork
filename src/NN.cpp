@@ -65,4 +65,17 @@ int main(){
 
 
     return 0;
+
+// train for simple SDR 7-segment to know the number 
+// 'a' 'b' 'c' 'd' 'e' 'f' 'g' means the display segments for number 0-9
+// 0: 1 1 1 1 1 1 0 
+// 1: 0 1 1 0 0 0 0 
+
+
+// 3 parttern to train the 7segemet SDR 
+// 7 to 1  put the value 7 dig get the number resuylt of the vale 
+// 7 to 10  7digs get the 0-9 number result  
+// 7 to 7 7digs get the 7digs result
+
+
 }
