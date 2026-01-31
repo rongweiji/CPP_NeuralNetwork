@@ -39,7 +39,29 @@ int main(){
     std::cout<<"1 XOR 0 = "<<mlp.run({1,0})[0]<<std::endl;
     std::cout<<"1 XOR 1 = "<<mlp.run({1,1})[0]<<std::endl;
 
-
+// Training MLP for XOR gate using backpropagation
+    std::cout<<"\n-------BP Example ------------------"<<std::endl;
+    mlp=MultiLayerPerceptron({2,2,1});
+    double MSE;
+    for(int i=0;i<3000;i++){
+        MSE=0.0;
+        MSE+=mlp.bp({0,0},{0});
+        MSE+=mlp.bp({0,1},{1});
+        MSE+=mlp.bp({1,0},{1});
+        MSE+=mlp.bp({1,1},{0});
+        MSE/=4.0;
+        if(i%100==0){
+            std::cout<<" Epoch "<<i<<", MSE: "<<MSE<<std::endl;
+        }
+    }
+    std::cout<<"Trained MLP Weights:"<<std::endl;
+    mlp.print_weights();
+    std::cout<<"MLP Output for XOR Gate after training: "<<std::endl;
+    std::cout<<"0 XOR 0 = "<<mlp.run({0,0})[0]<<std::endl;
+    std::cout<<"0 XOR 1 = "<<mlp.run({0,1})[0]<<std::endl;
+    std::cout<<"1 XOR 0 = "<<mlp.run({1,0})[0]<<std::endl;
+    std::cout<<"1 XOR 1 = "<<mlp.run({1,1})[0]<<std::endl;
+    
 
 
     return 0;
