@@ -90,7 +90,7 @@ MultiLayerPerceptron::MultiLayerPerceptron(const std::vector<size_t>& layers, do
 // backpropagation function to train the MLP, return the total error
 double MultiLayerPerceptron::bp(std::vector<double> x, std::vector<double>y){
     // step1: feed a sample to network
-    std::vector<double> output=run(x); // forward propagation
+    std::vector<double> output=run(x); // based on current weights, run the network to get output
 
     // step2: caculate MSE 
     double MSE=0.0;
@@ -100,16 +100,18 @@ double MultiLayerPerceptron::bp(std::vector<double> x, std::vector<double>y){
         MSE+=error[i]*error[i];
     }
     MSE/=layers.back(); // layer.back() is output layer neuron count summse/n
+    // mse=1/n*sum((target-output)^2)
 
-    // step3: caculate output error terms 
+    // step3: caculate output layer error terms 
     for(size_t i=0;i<output.size();i++){
-        deltas.back()[i]=output[i]*(1.0-output[i])*error[i]; // delta = f'(net)*error , f'(x)=f(x)*(1-f(x)) for sigmoid function
+        deltas.back()[i]=output[i]*(1.0-output[i])*error[i]; // derivative of sigmoid function f'(x)=f(x)*(1-f(x))
     }
+    // based on sigmoid activate function 1/(1+exp(-x)), the derivative f'(x)=f(x)*(1-f(x))
+    
 
-
-    // step4: caculate the error term of each unit on each layer 
-    for(size_t i=network.size()-2;i>0;i--){
-        for(size_t j=0;j<network[i].size();j++){
+    // step4: calculate the error term of each unit on each layer 
+    for(size_t i=network.size()-2;i>0;i--){ //itereate each layer
+        for(size_t j=0;j<network[i].size();j++){ // iterate each neuron in this layer
             double fwd_error=0.0;
             for(size_t k=0;k<layers[i+1];k++){
                 fwd_error+=deltas[i+1][k]*network[i+1][k].weights[j]; // sum of delta of next layer * weight between current neuron and next layer neuron
